@@ -10,7 +10,7 @@ export type CreateUserPayload = {
   role: RoleEnum;
 };
 
-export type UserResponse = Omit<UserModel, 'password' | 'createAt' | 'updateAt'>;
+export type UserResponse = Omit<UserModel, 'password'>;
 
 export interface UserModel extends Sequelize.Model<UserModel, CreateUserPayload> {
   id: number;
