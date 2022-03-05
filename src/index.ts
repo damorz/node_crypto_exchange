@@ -1,9 +1,8 @@
 import express, { Application, Request, Response } from 'express';
 import router from './routes/index';
-// import databaseSync from "./database/databaseSync";
 import cors from 'cors';
-import path from 'path';
 import config from './config/config';
+import { db } from './models';
 
 const app: Application = express();
 
@@ -29,8 +28,9 @@ app.listen(config.port, () => {
   console.log(`[Server] Running on port ${config.port}`);
 });
 
-// databaseSync().then(() => {
-//   console.timeEnd("[Server] Run times");
-// });
+db.sequelize.sync().then(() => {
+  console.log(`[Server] Database sync complete.`);
+});
+
 console.timeEnd('[Server] Run times');
 export default app;
