@@ -7,7 +7,7 @@ import { CreateUserPayload, LoginPayload, TokenResponse, UserModel, UserResponse
 import { Nullable } from '../@types/common.type';
 import { InvalidCredentialException } from '../common/exceptions/invalid-credential.exception';
 import { NotFoundException } from '../common/exceptions/not-found.exception';
-import { DuplcatedEmailException } from '../common/exceptions/duplicated-email.exception';
+import { DuplicatedEmailException } from '../common/exceptions/duplicated-email.exception';
 
 const userModel = db.User;
 
@@ -28,7 +28,7 @@ export const UserService = {
     const salt = await genSalt(round);
 
     const existUser = await UserService.getUserByEmail(payload.email);
-    if (existUser) throw new DuplcatedEmailException();
+    if (existUser) throw new DuplicatedEmailException();
 
     const userPayload: CreateUserPayload = {
       ...payload,
