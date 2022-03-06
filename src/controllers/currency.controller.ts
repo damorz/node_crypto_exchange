@@ -44,7 +44,7 @@ const CurrencyController = {
     const slug = req.params.slug;
 
     try {
-      const response: Nullable<CurrencyModel> = await CurrencyService.getUserBySlug(slug);
+      const response: Nullable<CurrencyModel> = await CurrencyService.getCurrencyBySlug(slug);
       return ResHelper(res, 200, response);
     } catch (err: any) {
       return ResHelper(res, err.statusCode, null, err.message);
@@ -57,7 +57,7 @@ const CurrencyController = {
         return [
           check('slug', "slug doesn't exists").exists(),
           check('name', "name doesn't exists").exists(),
-          check('publicBalance', "publicBalance doesn't exists").exists(),
+          check('publicBalance', 'Invalid publicBalance').exists().isNumeric(),
         ];
       }
       case 'UpdateCurrency': {

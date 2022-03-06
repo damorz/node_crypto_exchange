@@ -1,6 +1,5 @@
 import * as Sequelize from 'sequelize';
 import { sequelize } from '../instances/sequelize';
-import Currency from './currency.model';
 
 const CurrencyRate = sequelize.define(
   'currency_rate',
@@ -13,10 +12,12 @@ const CurrencyRate = sequelize.define(
     sourceCurrency: {
       type: Sequelize.STRING(12),
       allowNull: false,
+      unique: true,
     },
     targetCurrency: {
       type: Sequelize.STRING(12),
       allowNull: false,
+      unique: true,
     },
     rate: {
       type: Sequelize.DOUBLE,
