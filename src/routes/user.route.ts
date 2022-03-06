@@ -4,8 +4,8 @@ import { adminGuard, userGuard } from '../middlewares/token-guard.middleware';
 
 const router = Router();
 
-router.post('/register', UserController.Register);
-router.post('/login', UserController.Login);
+router.post('/register', UserController.validate('Register'), UserController.Register);
+router.post('/login', UserController.validate('Login'), UserController.Login);
 router.get('/:id', userGuard, UserController.GetUser);
 
 export default router;

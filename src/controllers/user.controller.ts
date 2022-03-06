@@ -3,14 +3,17 @@ import { UserService } from '../services/user.service';
 import { ResHelper } from '../common/helpers/resHelper';
 import { CreateUserPayload, TokenResponse, UserResponse } from '../@types/user.type';
 import { Nullable } from '../@types/common.type';
+import { check, validationResult } from 'express-validator';
 
 const UserController = {
   Register: async (req: Request, res: Response) => {
     const payload: CreateUserPayload = req.body;
 
-    if (Object.keys(payload).length === 0) {
-      return ResHelper(res, 400, null, 'Request body cannot be empty.');
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResHelper(res, 400, errors, 'Invalid request body.');
     }
+
     try {
       const response: UserResponse = await UserService.register(payload);
       return ResHelper(res, 200, response);
@@ -22,9 +25,11 @@ const UserController = {
   Login: async (req: Request, res: Response) => {
     const payload: CreateUserPayload = req.body;
 
-    if (Object.keys(payload).length === 0) {
-      return ResHelper(res, 400, null, 'Request body cannot be empty.');
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return ResHelper(res, 400, errors, 'Invalid request body.');
     }
+
     try {
       const response: TokenResponse = await UserService.login(payload);
 
@@ -37,11 +42,31 @@ const UserController = {
   GetUser: async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     try {
-      const response: Nullable<UserResponse> = await UserService.getUserById(id);
+      const response: UserResponse = await UserService.getUserById(id);
 
       return ResHelper(res, 200, response);
     } catch (err: any) {
       return ResHelper(res, err.statusCode, null, err.message);
+    }
+  },
+
+  validate: (method: string) => {
+    switch (method) {
+      case 'Register': {
+        return [
+          check('email', 'Invalid email').exists().isEmail(),
+          check('password', "password doesn't exists").exists(),
+          check('firstname', "firstname doesn't exists").exists(),
+          check('lastname', "lastname doesn't exists").exists(),
+          check('phonenumber', "phonenumber doesn't exists").exists(),
+        ];
+      }
+      case 'Login': {
+        return [check('email', 'Invalid email').exists().isEmail(), check('password', "password doesn't exists").exists()];
+      }
+      default: {
+        return [];
+      }
     }
   },
 };

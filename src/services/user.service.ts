@@ -12,13 +12,17 @@ import { DuplicatedEmailException } from '../common/exceptions/duplicated-email.
 const userModel = db.User;
 
 export const UserService = {
-  getUserById: async (id: number): Promise<Nullable<UserResponse>> => {
+  getUserById: async (id: number): Promise<UserResponse> => {
     const response = (await userModel.findByPk(id))?.toJSON();
-    delete response.password;
-    return response || null;
+    if (!response) throw new NotFoundException("User doesn't exist");
+    if (response) {
+      delete response.password;
+    }
+
+    return response as UserResponse;
   },
 
-  getUserByEmail: async (email: string): Promise<Nullable<UserModel>> => {
+  getUserByEmail: async (email: string): Promise<UserModel> => {
     const response = (await userModel.findOne({ where: { email } }))?.toJSON();
     return response || null;
   },
@@ -36,7 +40,9 @@ export const UserService = {
     };
 
     const user = (await userModel.create({ ...userPayload })).toJSON();
-    delete user.password;
+    if (user) {
+      delete user.password;
+    }
     return user;
   },
 

@@ -7,7 +7,7 @@ export type CreateUserPayload = {
   middlename?: string;
   lastname: string;
   phonenumber: string;
-  role: RoleEnum;
+  role?: RoleEnum;
 };
 
 export type UserResponse = Omit<UserModel, 'password'>;
