@@ -13,7 +13,7 @@ import { DuplicatedCurrencyException } from '../common/exceptions/duplicated-cur
 const currencyModel = db.Currency;
 
 export const CurrencyService = {
-  getUserBySlug: async (slug: string): Promise<CurrencyModel> => {
+  getCurrencyBySlug: async (slug: string): Promise<CurrencyModel> => {
     const response = (await currencyModel.findByPk(slug))?.toJSON();
     if (!response) throw new NotFoundException("Currency doesn't exist.");
     return response as CurrencyModel;
@@ -32,6 +32,6 @@ export const CurrencyService = {
     if (!response) {
       throw new NotFoundException("Currency doesn't exist.");
     }
-    return await CurrencyService.getUserBySlug(payload.slug);
+    return await CurrencyService.getCurrencyBySlug(payload.slug);
   },
 };

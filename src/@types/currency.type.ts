@@ -15,6 +15,6 @@ export interface CurrencyModel extends Sequelize.Model<CurrencyModel, CreateCurr
   slug: string;
   name: string;
   publicBalance: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
