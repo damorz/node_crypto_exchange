@@ -1,4 +1,4 @@
-export class DuplicatedEmailException extends Error {
+export class DuplicatedCurrencyException extends Error {
   name: string;
   message: string;
   stack?: string;
@@ -8,7 +8,7 @@ export class DuplicatedEmailException extends Error {
     super();
     Error.captureStackTrace(this, this.constructor);
     this.name = 'BAD REQUEST';
-    this.message = message || 'Email already exist.';
+    this.message = message || 'Currency already exist.';
     this.statusCode = 400;
   }
 }

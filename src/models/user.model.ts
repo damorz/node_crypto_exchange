@@ -1,7 +1,7 @@
 import * as Sequelize from 'sequelize';
 import { sequelize } from '../instances/sequelize';
 
-export const User = sequelize.define(
+const User = sequelize.define(
   'user',
   {
     id: {
@@ -45,3 +45,5 @@ export const User = sequelize.define(
     freezeTableName: true,
   }
 );
+
+export default User;
