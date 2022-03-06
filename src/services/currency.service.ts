@@ -1,11 +1,5 @@
-import config from '../config/config';
-import { genSalt, hash, compare } from 'bcryptjs';
 import { db } from '../models';
-import * as jwt from 'jsonwebtoken';
-import { JwtPayload } from 'jsonwebtoken';
-import { CreateUserPayload, LoginPayload, TokenResponse, UserModel, UserResponse } from '../@types/user.type';
 import { Nullable } from '../@types/common.type';
-import { InvalidCredentialException } from '../common/exceptions/invalid-credential.exception';
 import { NotFoundException } from '../common/exceptions/not-found.exception';
 import { CreateCurrencyPayload, CurrencyModel, UpdateCurrencyPayload } from '../@types/currency.type';
 import { DuplicatedCurrencyException } from '../common/exceptions/duplicated-currency.exception';
