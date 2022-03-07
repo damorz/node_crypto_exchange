@@ -1,8 +1,8 @@
 import { db } from '../models';
 import { Op } from 'sequelize';
 import { NotFoundException } from '../common/exceptions/not-found.exception';
-import { DuplicatedCurrencyException } from '../common/exceptions/duplicated-currency.exception';
 import { CreateCurrencyRatePayload, CurrencyRateArgs, CurrencyRateModel } from '../@types/currency-rate.type';
+import { DuplicatedException } from '../common/exceptions/duplicated.exception';
 
 const currencyRateModel = db.CurrencyRate;
 const currencyModel = db.Currency;
@@ -20,7 +20,7 @@ export const CurrencyRateService = {
   createOrUpdateCurrencyRate: async (payload: CreateCurrencyRatePayload): Promise<CurrencyRateModel[]> => {
     const { sourceCurrency, targetCurrency, rate } = payload;
 
-    if (sourceCurrency === targetCurrency) throw new DuplicatedCurrencyException('Duplicated currency input.');
+    if (sourceCurrency === targetCurrency) throw new DuplicatedException('Duplicated currency input.');
 
     // Check exist token
     const condition = {

@@ -6,6 +6,6 @@ const router = Router();
 
 router.post('', adminGuard, CurrencyController.validate('CreateCurrency'), CurrencyController.CreateCurrency);
 router.put('', adminGuard, CurrencyController.validate('UpdateCurrency'), CurrencyController.UpdateCurrency);
-router.get('', userGuard, CurrencyController.validate('GetCurrency'), CurrencyController.GetCurrency);
+router.get('', CurrencyController.validate('GetCurrency'), CurrencyController.GetCurrency);
 
 export default router;

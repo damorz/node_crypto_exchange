@@ -55,6 +55,7 @@ export const TransactionService = {
     });
     if (!toResponse) throw new TransferFailedException();
 
+    // create transaction
     const transactionPayload = {
       from: sourceUserId,
       to: targetUserId,
