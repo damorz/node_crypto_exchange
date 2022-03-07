@@ -5,12 +5,6 @@ export type CreateCurrencyRatePayload = {
   rate: number;
 };
 
-export type UpdateCurrencyRatePayload = {
-  sourceCurrency: string;
-  targetCurrency: string;
-  rate: number;
-};
-
 export interface CurrencyRateModel extends Sequelize.Model<CurrencyRateModel, CreateCurrencyRatePayload> {
   id: number;
   sourceCurrency: string;
