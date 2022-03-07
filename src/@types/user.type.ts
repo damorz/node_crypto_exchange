@@ -20,6 +20,7 @@ export interface UserModel extends Sequelize.Model<UserModel, CreateUserPayload>
   lastname: string;
   phonenumber: string;
   password: string;
+  role: RoleEnum;
   createdAt: Date;
   updatedAt: Date;
 }

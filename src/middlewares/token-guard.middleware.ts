@@ -1,7 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import { IncomingHttpHeaders } from 'http';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { UserService } from '../services/user.service';
 import { ResHelper } from '../common/helpers/resHelper';
 import config from '../config/config';
 

@@ -1,9 +1,7 @@
 import { db } from '../models';
-import { Nullable } from '../@types/common.type';
 import { NotFoundException } from '../common/exceptions/not-found.exception';
-import { AlterPublicBalancePayload, CreateCurrencyPayload, CurrencyModel, UpdateCurrencyPayload } from '../@types/currency.type';
-import { DuplicatedCurrencyException } from '../common/exceptions/duplicated-currency.exception';
-import { Sequelize } from 'sequelize';
+import { CreateCurrencyPayload, CurrencyModel, UpdateCurrencyPayload } from '../@types/currency.type';
+import { DuplicatedException } from '../common/exceptions/duplicated.exception';
 
 const currencyModel = db.Currency;
 
@@ -16,7 +14,7 @@ export const CurrencyService = {
 
   createCurrency: async (payload: CreateCurrencyPayload): Promise<CurrencyModel> => {
     const existCurrency = (await currencyModel.findOne({ where: { slug: payload.slug } }))?.toJSON();
-    if (existCurrency) throw new DuplicatedCurrencyException();
+    if (existCurrency) throw new DuplicatedException('Currency already exist.');
 
     const currency = (await currencyModel.create({ ...payload })).toJSON();
     return currency;

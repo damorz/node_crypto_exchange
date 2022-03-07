@@ -1,13 +1,12 @@
 import config from '../config/config';
+import * as jwt from 'jsonwebtoken';
 import { genSalt, hash, compare } from 'bcryptjs';
 import { db } from '../models';
-import * as jwt from 'jsonwebtoken';
-import { JwtPayload } from 'jsonwebtoken';
 import { CreateUserPayload, LoginPayload, TokenResponse, UserModel, UserResponse } from '../@types/user.type';
-import { Nullable } from '../@types/common.type';
 import { InvalidCredentialException } from '../common/exceptions/invalid-credential.exception';
 import { NotFoundException } from '../common/exceptions/not-found.exception';
-import { DuplicatedEmailException } from '../common/exceptions/duplicated-email.exception';
+import { DuplicatedException } from '../common/exceptions/duplicated.exception';
+import { Nullable } from '../@types/common.type';
 
 const userModel = db.User;
 
@@ -22,7 +21,7 @@ export const UserService = {
     return response as UserResponse;
   },
 
-  getUserByEmail: async (email: string): Promise<UserModel> => {
+  getUserByEmail: async (email: string): Promise<Nullable<UserModel>> => {
     const response = (await userModel.findOne({ where: { email } }))?.toJSON();
     return response || null;
   },
@@ -32,7 +31,7 @@ export const UserService = {
     const salt = await genSalt(round);
 
     const existUser = await UserService.getUserByEmail(payload.email);
-    if (existUser) throw new DuplicatedEmailException();
+    if (existUser) throw new DuplicatedException('Email already exist');
 
     const userPayload: CreateUserPayload = {
       ...payload,
@@ -50,14 +49,19 @@ export const UserService = {
     const { email, password } = payload;
     const { secretKey, expiresIn } = config.jwt;
 
-    const user = (await userModel.findOne({ where: { email } }))?.toJSON();
+    const user = await UserService.getUserByEmail(email);
     if (!user) throw new NotFoundException('User not found.');
 
     const valid = await compare(password, user.password);
     if (!valid) throw new InvalidCredentialException();
 
+    const signPayload: Partial<UserModel> = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
     return {
-      token: jwt.sign({ id: user.id, email: user.email, role: user.role }, secretKey, { expiresIn }),
+      token: jwt.sign({ signPayload }, secretKey, { expiresIn }),
       expiresIn,
     };
   },

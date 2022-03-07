@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { UserService } from '../services/user.service';
 import { ResHelper } from '../common/helpers/resHelper';
 import { CreateUserPayload, TokenResponse, UserResponse } from '../@types/user.type';
-import { Nullable } from '../@types/common.type';
 import { check, validationResult } from 'express-validator';
 
 const UserController = {

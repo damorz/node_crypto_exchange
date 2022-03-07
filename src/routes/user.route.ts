@@ -1,6 +1,6 @@
 import UserController from '../controllers/user.controller';
-import { Router, Request, Response } from 'express';
-import { adminGuard, userGuard } from '../middlewares/token-guard.middleware';
+import { Router } from 'express';
+import { userGuard } from '../middlewares/token-guard.middleware';
 
 const router = Router();
 

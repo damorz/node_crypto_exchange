@@ -31,7 +31,7 @@ const config: AppConfigProviderType = {
   },
   jwt: {
     secretKey: JWT_SECRET_KEY || 'jwt1secret',
-    expiresIn: Number(JWT_EXPIRES || 300000), // 5min
+    expiresIn: Number(JWT_EXPIRES || 300000),
   },
 };
 
