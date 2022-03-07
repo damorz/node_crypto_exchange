@@ -1,6 +1,5 @@
 import * as Sequelize from 'sequelize';
 import { sequelize } from '../instances/sequelize';
-import Currency from './currency.model';
 
 const Wallet = sequelize.define(
   'wallet',
@@ -28,4 +27,5 @@ const Wallet = sequelize.define(
     freezeTableName: true,
   }
 );
+
 export default Wallet;

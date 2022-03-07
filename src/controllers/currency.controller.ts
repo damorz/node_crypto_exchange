@@ -43,7 +43,6 @@ const CurrencyController = {
     if (!errors.isEmpty()) {
       return ResHelper(res, 400, errors, 'Invalid request body.');
     }
-    console.log(errors);
 
     const slug = req.query.slug as string;
 
@@ -58,11 +57,7 @@ const CurrencyController = {
   validate: (method: string) => {
     switch (method) {
       case 'CreateCurrency': {
-        return [
-          check('slug', "slug doesn't exists").exists(),
-          check('name', "name doesn't exists").exists(),
-          check('publicBalance', 'Invalid publicBalance').exists().isNumeric(),
-        ];
+        return [check('slug', "slug doesn't exists").exists(), check('name', "name doesn't exists").exists()];
       }
       case 'UpdateCurrency': {
         return [check('slug', "slug doesn't exists").exists()];

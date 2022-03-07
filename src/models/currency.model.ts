@@ -14,10 +14,6 @@ const Currency = sequelize.define(
       type: Sequelize.TEXT,
       allowNull: false,
     },
-    publicBalance: {
-      type: Sequelize.DOUBLE,
-      allowNull: false,
-    },
   },
   {
     timestamps: true,
