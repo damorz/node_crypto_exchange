@@ -24,7 +24,7 @@ export const userGuard = async (req: Request, res: Response, next: NextFunction)
 
   try {
     const decoded = await verifyToken(token);
-    if (typeof decoded !== 'string' && decoded.role !== 'user' && decoded.role !== 'admin') {
+    if (typeof decoded !== 'string' && decoded.signPayload.role !== 'user' && decoded.signPayload.role !== 'admin') {
       return ResHelper(res, 401, null, 'Unauthorized');
     }
   } catch (error) {
@@ -41,7 +41,7 @@ export const adminGuard = async (req: Request, res: Response, next: NextFunction
 
   try {
     const decoded = await jwt.verify(token, secretKey);
-    if (typeof decoded !== 'string' && decoded.role !== 'admin') {
+    if (typeof decoded !== 'string' && decoded.signPayload.role !== 'admin') {
       return ResHelper(res, 401, null, 'Unauthorized');
     }
   } catch (error) {
