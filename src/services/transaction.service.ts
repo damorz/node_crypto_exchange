@@ -23,7 +23,7 @@ export const TransactionService = {
     // sourceUser
     const decoded = await verifyToken(token);
     if (typeof decoded === 'string') throw new InvalidCredentialException();
-    const sourceUserId: number = decoded.id;
+    const sourceUserId: number = decoded.signPayload.id;
 
     // targetUser
     const targetUser = await UserService.getUserByEmail(targetEmail);
