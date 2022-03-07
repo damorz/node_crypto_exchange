@@ -6,7 +6,6 @@
 
 ```console
 $ git clone git@github.com:damorz/node_crypto_exchange.git
-$ cd programming
 $ npm install
 ```
 
