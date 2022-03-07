@@ -6,6 +6,6 @@ const router = Router();
 
 router.post('/register', UserController.validate('Register'), UserController.Register);
 router.post('/login', UserController.validate('Login'), UserController.Login);
-router.get('/:id', userGuard, UserController.GetUser);
+router.get('', userGuard, UserController.GetUser);
 
 export default router;

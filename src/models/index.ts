@@ -4,16 +4,20 @@ import User from './user.model';
 import Currency from './currency.model';
 import CurrencyRate from './currency-rate.model';
 import Wallet from './wallet.model';
+import Transaction from './transaction.model';
 
 Wallet.belongsTo(User, { foreignKey: 'userId' });
-User.hasMany(Wallet, { foreignKey: 'userId' });
 
 Wallet.belongsTo(Currency, { foreignKey: 'currencySlug' });
-Currency.hasMany(Wallet, { foreignKey: 'currencySlug' });
 
 CurrencyRate.belongsTo(Currency, { foreignKey: 'targetCurrency' });
 CurrencyRate.belongsTo(Currency, { foreignKey: 'sourceCurrency' });
-Currency.hasMany(CurrencyRate, { foreignKey: 'sourceCurrency' });
+
+Transaction.belongsTo(Currency, { foreignKey: 'targetCurrency' });
+Transaction.belongsTo(Currency, { foreignKey: 'sourceCurrency' });
+
+Transaction.belongsTo(User, { foreignKey: 'from' });
+Transaction.belongsTo(User, { foreignKey: 'to' });
 
 export const db = {
   // sequelize part
@@ -25,4 +29,5 @@ export const db = {
   Currency,
   CurrencyRate,
   Wallet,
+  Transaction,
 };
