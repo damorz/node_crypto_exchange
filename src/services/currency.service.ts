@@ -29,20 +29,4 @@ export const CurrencyService = {
     }
     return await CurrencyService.getCurrencyBySlug(payload.slug);
   },
-
-  // alterPublicBalance: async (payload: AlterPublicBalancePayload): Promise<CurrencyModel> => {
-  //   const { slug, value } = payload;
-  //   const operation: string = value < 0 ? `publicBalance ${value}` : `publicBalance + ${value}`;
-
-  //   const response = await currencyModel.update(
-  //     {
-  //       publicBalance: Sequelize.literal(operation),
-  //     },
-  //     { where: { slug } }
-  //   );
-  //   if (!response) {
-  //     throw new NotFoundException("Currency doesn't exist.");
-  //   }
-  //   return await CurrencyService.getCurrencyBySlug(slug);
-  // },
 };

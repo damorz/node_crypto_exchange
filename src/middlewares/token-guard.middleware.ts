@@ -5,22 +5,26 @@ import { UserService } from '../services/user.service';
 import { ResHelper } from '../common/helpers/resHelper';
 import config from '../config/config';
 
-const extractToken = (headers: IncomingHttpHeaders) => {
+export const extractToken = (headers: IncomingHttpHeaders) => {
   const { authorization } = headers;
 
-  if (!authorization) return authorization;
+  if (!authorization) return '';
 
   return authorization.split(' ')[1];
 };
 
-export const userGuard = async (req: Request, res: Response, next: NextFunction) => {
-  const token = extractToken(req.headers) || '';
+export const verifyToken = async (token: string): Promise<string | jwt.JwtPayload> => {
   const { secretKey } = config.jwt;
+  return await jwt.verify(token, secretKey);
+};
+
+export const userGuard = async (req: Request, res: Response, next: NextFunction) => {
+  const token = extractToken(req.headers);
 
   if (!token) return ResHelper(res, 401, null, 'Unauthorized');
 
   try {
-    const decoded = await jwt.verify(token, secretKey);
+    const decoded = await verifyToken(token);
     if (typeof decoded !== 'string' && decoded.role !== 'user' && decoded.role !== 'admin') {
       return ResHelper(res, 401, null, 'Unauthorized');
     }

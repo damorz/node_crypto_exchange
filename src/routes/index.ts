@@ -3,6 +3,7 @@ import UserRoutes from './user.route';
 import CurrencyRoutes from './currency.route';
 import CurrencyRateRoutes from './currency-rate.route';
 import WalletRoutes from './wallet.route';
+import TransactionRoutes from './transaction.route';
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use('/user', UserRoutes);
 router.use('/currency', CurrencyRoutes);
 router.use('/rate', CurrencyRateRoutes);
 router.use('/wallet', WalletRoutes);
+router.use('/transaction', TransactionRoutes);
 
 export default router;

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { ResHelper } from '../common/helpers/resHelper';
 import { query, check, validationResult } from 'express-validator';
-import { AlterWalletBalancePayload, WalletArgs, WalletModel } from '../@types/wallet.type';
+import { AlterWalletBalancePayload, TotalBalanceResponse, WalletArgs, WalletModel } from '../@types/wallet.type';
 import { WalletService } from '../services/wallet.service';
 
 const WalletController = {
@@ -9,7 +9,7 @@ const WalletController = {
     const slug = req.query?.slug as string | undefined;
 
     try {
-      const response: any[] = await WalletService.getTotalBalance(slug);
+      const response: TotalBalanceResponse[] = await WalletService.getTotalBalance(slug);
       return ResHelper(res, 200, response);
     } catch (err: any) {
       return ResHelper(res, err.statusCode, null, err.message);

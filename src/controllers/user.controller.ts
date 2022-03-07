@@ -40,7 +40,7 @@ const UserController = {
   },
 
   GetUser: async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
+    const id = Number(req.query.id);
     try {
       const response: UserResponse = await UserService.getUserById(id);
 

@@ -1,6 +1,5 @@
 import * as Sequelize from 'sequelize';
 import { sequelize } from '../instances/sequelize';
-import CurrencyRate from './currency-rate.model';
 
 const Currency = sequelize.define(
   'currency',

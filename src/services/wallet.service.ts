@@ -1,6 +1,6 @@
 import { db } from '../models';
 import { NotFoundException } from '../common/exceptions/not-found.exception';
-import { AlterWalletBalancePayload, WalletArgs, WalletModel } from '../@types/wallet.type';
+import { AlterWalletBalancePayload, TotalBalanceResponse, WalletArgs, WalletModel } from '../@types/wallet.type';
 import { CurrencyService } from './currency.service';
 import { Sequelize } from 'sequelize';
 import sequelize from 'sequelize';
@@ -9,15 +9,15 @@ import { BalanceLessThanZeroException } from '../common/exceptions/balance-less-
 const walletModel = db.Wallet;
 
 export const WalletService = {
-  getTotalBalance: async (currencySlug?: string): Promise<any[]> => {
+  getTotalBalance: async (currencySlug?: string): Promise<TotalBalanceResponse[]> => {
     const condition = currencySlug ? { currencySlug } : undefined;
 
-    const totalBalance = await walletModel.findAll({
+    const totalBalance: unknown = await walletModel.findAll({
       where: condition,
       attributes: ['currencySlug', [sequelize.fn('sum', sequelize.col('balance')), 'totalBalance']],
       group: ['currencySlug'],
     });
-    return totalBalance;
+    return totalBalance as TotalBalanceResponse[];
   },
 
   getWallet: async (payload: WalletArgs): Promise<WalletModel> => {
@@ -34,15 +34,15 @@ export const WalletService = {
     if (!currency) throw new NotFoundException("Currency doesn't exist.");
 
     const wallet = (await walletModel.findOne({ where: { userId, currencySlug } }))?.toJSON() as WalletModel;
+
     if (!wallet) {
+      if (value < 0) throw new BalanceLessThanZeroException('Not enough balance to transfer');
       const newWallet: WalletModel = (await walletModel.create({ userId, currencySlug, balance: Math.max(value, 0) })).toJSON();
       if (!newWallet) throw new Error('Something went wrong!');
 
       return newWallet;
     }
-
-    if (wallet.balance + value < 0) throw new BalanceLessThanZeroException('Total wallet balance cannot less than zero.');
-
+    if (wallet.balance + value < 0) throw new BalanceLessThanZeroException('Not enough balance to transfer');
     const updatedWallet = await walletModel.update(
       {
         userId,
